@@ -59,15 +59,19 @@ class Map(QMainWindow, Ui_MainWindow):
 
     def on_key_up(self):
         self.cords[1] += self.zoom
+        self.show_map()
 
     def on_key_down(self):
         self.cords[1] -= self.zoom
+        self.show_map()
 
     def on_key_left(self):
         self.cords[0] -= self.zoom
+        self.show_map()
 
     def on_key_right(self):
         self.cords[0] += self.zoom
+        self.show_map()
 
     def keyPressEvent(self, event) -> None:
         if event.key() == Qt.Key_PageUp:
