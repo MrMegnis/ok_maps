@@ -1,25 +1,27 @@
 import requests
 
 
-def get_image_bytes(addres, size, path, api_key="40d1649f-0493-4b70-98ba-98533de7710b"):
-    url = f"https://geocode-maps.yandex.ru/1.x?geocode={addres}&apikey={api_key}&format=json"
+def get_image_by_address_as_png(addres, size, path, api_key="40d1649f-0493-4b70-98ba-98533de7710b"):
+    url = f"https://geocode-maps.yandex.ru/1.x"
     geocoder_params = {
         "apikey": api_key,
         "geocode": addres,
         "format": "json"}
-    with requests.get(url) as response:
+    with requests.get(url, params=geocoder_params) as response:
         data = response.json()
         cords = data["response"]['GeoObjectCollection']["featureMember"][0]["GeoObject"]["Point"]["pos"]
         # print(cords)
 
-    url = f"https://static-maps.yandex.ru/1.x/?l=sat&ll={cords.split()[0]},{cords.split()[1]}&z=4"
+    url = f"https://static-maps.yandex.ru/1.x"
     map_params = {
         "ll": cords,
-        "spn": ",".join(size),
+        "z": size,
         "l": "map"
         # "pt": f"{cords},pmwtm1"
     }
     # print(url)
-    with requests.get(url) as response:
+    with requests.get(url, params=map_params) as response:
         data = response.content
-        return data
+        with open(path, "wb") as f:
+            f.write(data)
+    return path
