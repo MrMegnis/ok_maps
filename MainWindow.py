@@ -24,6 +24,7 @@ class Map(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.cords = [0, 0]
         self.zoom = 4
+        self.delta = 0.002
 
         self.cords[0] = float(input())
         self.cords[1] = float(input())
@@ -39,23 +40,18 @@ class Map(QMainWindow, Ui_MainWindow):
         self.cords = cords
         self.zoom = zoom
         self.show_map()
-
     def show_map(self):
         get_image_by_cords_as_png(cords=tuple(self.cords), zoom=self.zoom, path="temp/a.png")
         pixmap = QPixmap("temp/a.png")
         self.label.setPixmap(pixmap)
 
-    def map_left(self):
-        pass
+    def on_PageUp(self):
+        self.zoom += self.delta
+        self.show_map()
 
-    def map_right(self):
-        pass
-
-    def map_up(self):
-        pass
-
-    def map_down(self):
-        pass
+    def on_PageDown(self):
+        self.zoom += self.delta
+        self.show_map()
 
     def on_key_up(self):
         self.cords[1] += self.zoom
@@ -75,9 +71,9 @@ class Map(QMainWindow, Ui_MainWindow):
 
     def keyPressEvent(self, event) -> None:
         if event.key() == Qt.Key_PageUp:
-            print("pup")
+            self.on_PageUp()
         elif event.key() == Qt.Key_PageDown:
-            print("pdown")
+            self.on_PageDown()
         elif event.key() == Qt.Key_Up:
             self.on_key_up()
         elif event.key() == Qt.Key_Down:
