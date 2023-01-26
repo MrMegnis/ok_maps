@@ -1,8 +1,9 @@
 import requests
+from get_image_by_cords_as_png import get_image_by_cords_as_png
 
 
 def get_image_by_address_as_png(addres, size, path, api_key="40d1649f-0493-4b70-98ba-98533de7710b"):
-    url = f"https://geocode-maps.yandex.ru/1.x"
+    url = "http://geocode-maps.yandex.ru/1.x/"
     geocoder_params = {
         "apikey": api_key,
         "geocode": addres,
@@ -10,18 +11,10 @@ def get_image_by_address_as_png(addres, size, path, api_key="40d1649f-0493-4b70-
     with requests.get(url, params=geocoder_params) as response:
         data = response.json()
         cords = data["response"]['GeoObjectCollection']["featureMember"][0]["GeoObject"]["Point"]["pos"]
-        # print(cords)
+        print(cords)
+    cords = tuple(map(float, cords.split()))
+    return get_image_by_cords_as_png(cords, size, path, api_key)
 
-    url = f"https://static-maps.yandex.ru/1.x"
-    map_params = {
-        "ll": cords,
-        "z": size,
-        "l": "map"
-        # "pt": f"{cords},pmwtm1"
-    }
-    # print(url)
-    with requests.get(url, params=map_params) as response:
-        data = response.content
-        with open(path, "wb") as f:
-            f.write(data)
-    return path
+
+if __name__ == "__main__":
+    get_image_by_address_as_png("russia", 4, "a.png")
