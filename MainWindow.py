@@ -24,7 +24,7 @@ class Map(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.cords = [0, 0]
         self.zoom = 4
-        self.delta = 0.002
+        self.delta = 1
 
         self.cords[0] = float(input())
         self.cords[1] = float(input())
@@ -40,13 +40,27 @@ class Map(QMainWindow, Ui_MainWindow):
         self.cords = cords
         self.zoom = zoom
         self.show_map()
+
     def show_map(self):
+        if self.zoom < 0.002:
+            self.zoom = 0.002
+        if self.zoom > 17:
+            self.zoom = 17
+        if self.cords[0] > 180:
+            self.cords[0] = 180
+        if self.cords[0] < -180:
+            self.cords[0] = -180
+        if self.cords[0] > 90:
+            self.cords[0] = 90
+        if self.cords[0] < -90:
+            self.cords[0] = -90
+        print(self.cords, self.zoom)
         get_image_by_cords_as_png(cords=tuple(self.cords), zoom=self.zoom, path="temp/a.png")
         pixmap = QPixmap("temp/a.png")
         self.label.setPixmap(pixmap)
 
     def on_PageUp(self):
-        self.zoom += self.delta
+        self.zoom -= self.delta
         self.show_map()
 
     def on_PageDown(self):
