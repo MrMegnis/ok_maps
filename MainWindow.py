@@ -22,12 +22,12 @@ class Map(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.coords = [0, 0]
-        self.scale = 100
+        self.cords = [0, 0]
+        self.zoom = 4
 
-        self.coords[0] = float(input())
-        self.coords[1] = float(input())
-        self.scale = int(input())
+        self.cords[0] = float(input())
+        self.cords[1] = float(input())
+        self.zoom = float(input())
         self.show_map()
 
         # self.startdialog = StartDialog()
@@ -35,14 +35,13 @@ class Map(QMainWindow, Ui_MainWindow):
         # self.startdialog.OkBtn.clicked.connect(lambda: self.change_coords_and_size([self.startdialog.xSpinBox.value(),
         #                                     self.startdialog.ySpinBox.value()], self.startdialog.scaleSpinBox.value()))
 
-    def change_coords_and_size(self, coords: list, scale: int):
-        self.coords = coords
-        self.scale = scale
+    def change_coords_and_size(self, cords: list, zoom: float):
+        self.cords = cords
+        self.zoom = zoom
         self.show_map()
-        self.zoom = 0.002
 
     def show_map(self):
-        get_image_by_cords_as_png(tuple(self.coords), size=self.zoom, path="temp/a.png")
+        get_image_by_cords_as_png(cords=tuple(self.cords), zoom=self.zoom, path="temp/a.png")
         pixmap = QPixmap("temp/a.png")
         self.label.setPixmap(pixmap)
 
