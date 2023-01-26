@@ -43,7 +43,6 @@ class Map(QMainWindow, Ui_MainWindow):
             print("riht")
 
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ex = Map()
