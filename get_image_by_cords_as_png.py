@@ -6,7 +6,7 @@ def get_image_by_cords_as_png(cords : tuple, zoom, path, api_key="40d1649f-0493-
     print(",".join(map(str, cords)))
     map_params = {
         "ll": ",".join(map(str, cords)),
-        "z": zoom,
+        "spn": ",".join(map(str, (zoom, zoom))),
         "l": "map"
         # "pt": f"{cords},pmwtm1"
     }
@@ -19,4 +19,4 @@ def get_image_by_cords_as_png(cords : tuple, zoom, path, api_key="40d1649f-0493-
 
 
 if __name__ == "__main__":
-    get_image_by_cords_as_png((0,0), 4, "a.png")
+    get_image_by_cords_as_png((37.620070 + 0.002,55.753630), 0.002, "a.png")

@@ -12,6 +12,8 @@ class Map(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.cords = [0,0]
+        self.delta = 0.002
 
     def show_map(self):
         pass
@@ -28,19 +30,31 @@ class Map(QMainWindow, Ui_MainWindow):
     def map_down(self):
         pass
 
+    def on_key_up(self):
+        self.cords[1] += self.delta
+
+    def on_key_down(self):
+        self.cords[1] -= self.delta
+
+    def on_key_left(self):
+        self.cords[0] -= self.delta
+
+    def on_key_right(self):
+        self.cords[0] += self.delta
+
     def keyPressEvent(self, event) -> None:
         if event.key() == Qt.Key_PageUp:
             print("pup")
         elif event.key() == Qt.Key_PageDown:
             print("pdown")
         elif event.key() == Qt.Key_Up:
-            print("up")
+            self.on_key_up()
         elif event.key() == Qt.Key_Down:
-            print("down")
+            self.on_key_down()
         elif event.key() == Qt.Key_Left:
-            print("left")
+            self.on_key_left()
         elif event.key() == Qt.Key_Right:
-            print("riht")
+            self.on_key_right()
 
 
 if __name__ == "__main__":

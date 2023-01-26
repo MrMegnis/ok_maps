@@ -17,4 +17,4 @@ def get_image_by_address_as_png(addres, zoom, path, api_key="40d1649f-0493-4b70-
 
 
 if __name__ == "__main__":
-    get_image_by_address_as_png("russia", 4, "a.png")
+    get_image_by_address_as_png("russia", 10, "a.png")

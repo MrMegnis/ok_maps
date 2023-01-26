@@ -5,7 +5,7 @@ def get_image_by_cords_bytes(cords : tuple, zoom, api_key="40d1649f-0493-4b70-98
     url = f"https://static-maps.yandex.ru/1.x"
     map_params = {
         "ll": ",".join(map(str, cords)),
-        "z": zoom,
+        "spn": ",".join(map(str, (zoom, zoom))),
         "l": "map"
         # "pt": f"{cords},pmwtm1"
     }
