@@ -1,12 +1,12 @@
 import requests
 
 
-def get_image_by_cords_as_png(cords : tuple, size, path, api_key="40d1649f-0493-4b70-98ba-98533de7710b"):
+def get_image_by_cords_as_png(cords : tuple, zoom, path, api_key="40d1649f-0493-4b70-98ba-98533de7710b"):
     url = f"https://static-maps.yandex.ru/1.x"
     print(",".join(map(str, cords)))
     map_params = {
         "ll": ",".join(map(str, cords)),
-        "z": size,
+        "z": zoom,
         "l": "map"
         # "pt": f"{cords},pmwtm1"
     }

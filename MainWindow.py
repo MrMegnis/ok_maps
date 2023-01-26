@@ -1,7 +1,9 @@
 import sys
 
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QDialog, QWidget, QApplication
+from PyQt5.uic.properties import QtGui
 
 from widgets.main_widget import Ui_MainWindow
 
@@ -25,6 +27,21 @@ class Map(QMainWindow, Ui_MainWindow):
 
     def map_down(self):
         pass
+
+    def keyPressEvent(self, event) -> None:
+        if event.key() == Qt.Key_PageUp:
+            print("pup")
+        elif event.key() == Qt.Key_PageDown:
+            print("pdown")
+        elif event.key() == Qt.Key_Up:
+            print("up")
+        elif event.key() == Qt.Key_Down:
+            print("down")
+        elif event.key() == Qt.Key_Left:
+            print("left")
+        elif event.key() == Qt.Key_Right:
+            print("riht")
+
 
 
 if __name__ == "__main__":
