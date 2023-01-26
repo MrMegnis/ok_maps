@@ -59,16 +59,16 @@ class Map(QMainWindow, Ui_MainWindow):
         pass
 
     def on_key_up(self):
-        self.cords[1] += self.delta
+        self.coords[1] += self.delta
 
     def on_key_down(self):
-        self.cords[1] -= self.delta
+        self.coords[1] -= self.delta
 
     def on_key_left(self):
-        self.cords[0] -= self.delta
+        self.coords[0] -= self.delta
 
     def on_key_right(self):
-        self.cords[0] += self.delta
+        self.coords[0] += self.delta
 
     def keyPressEvent(self, event) -> None:
         if event.key() == Qt.Key_PageUp:
