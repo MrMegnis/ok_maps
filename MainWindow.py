@@ -26,14 +26,16 @@ class Map(QMainWindow, Ui_MainWindow):
         self.cords = [0, 0]
         self.zoom = 4
         self.delta_zoom = 1
-        self.delta_spn = 1
+        self.delta_spn = 2
+        self.mid_delta_spn = 0.2
+        self.low_delta_spn = 0.002
         self.map_types = ["map", "sat", "sat,skl"]
         self.marks = []
         self.find_address("екатеринбург")
         self.cur_type = 1
         self.size = [450, 450]
-        self.cords[0] = float(input("Введите координату x: "))
-        self.cords[1] = float(input("Введите координату y: "))
+        # self.cords[0] = float(input("Введите координату x: "))
+        # self.cords[1] = float(input("Введите координату y: "))
         self.zoom = int(input("Введите масштаб: "))
         self.spn = self.zoom
         self.show_map()
@@ -60,11 +62,11 @@ class Map(QMainWindow, Ui_MainWindow):
 
     def show_map(self):
         if self.zoom < 0:
-            self.zoom = 1
+            self.zoom = 0
         if self.zoom > 17:
             self.zoom = 17
         if self.spn < 0.002:
-            self.spn = 0.002
+            self.spn = 0.0002
         if self.spn > 100:
             self.spn = 100
         if self.cords[0] > 180:
@@ -92,12 +94,28 @@ class Map(QMainWindow, Ui_MainWindow):
 
     def on_PageUp(self):
         self.zoom -= self.delta_zoom
-        self.spn -= self.delta_spn
+        if self.spn > 1:
+            if self.spn - self.delta_spn < 0.01:
+                self.spn = 1
+            else:
+                self.spn -= self.delta_spn
+        elif self.spn > 0.01:
+            if self.spn - self.mid_delta_spn < 0.01:
+                self.spn = 0.01
+            else:
+                self.spn -= self.mid_delta_spn
+        else:
+            self.spn -= self.low_delta_spn
         self.show_map()
 
     def on_PageDown(self):
         self.zoom += self.delta_zoom
-        self.spn += self.delta_spn
+        if self.spn > 1:
+            self.spn += self.delta_spn
+        elif self.spn > 0.01:
+            self.spn += self.mid_delta_spn
+        else:
+            self.spn += self.low_delta_spn
         self.show_map()
 
     def on_key_up(self):
