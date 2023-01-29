@@ -1,20 +1,12 @@
 import requests
 from get_image_by_cords_bytes import get_image_by_cords_bytes
+from get_cords_by_adress import get_cords_by_adress
 
-def get_image_by_address_bytes(addres, size : tuple, zoom, layer, api_key="40d1649f-0493-4b70-98ba-98533de7710b"):
-    url = f"https://geocode-maps.yandex.ru/1.x?geocode={addres}&apikey={api_key}&format=json"
-    geocoder_params = {
-        "apikey": api_key,
-        "geocode": addres,
-        "format": "json"}
-    with requests.get(url) as response:
-        data = response.json()
-        cords = data["response"]['GeoObjectCollection']["featureMember"][0]["GeoObject"]["Point"]["pos"]
-        # print(cords)
 
-    cords = tuple(map(float, cords.split()))
+def get_image_by_address_bytes(addres, size : tuple, layer, zoom = None, spn = None, api_key="40d1649f-0493-4b70-98ba-98533de7710b"):
+    cords = get_cords_by_adress(addres)
     return get_image_by_cords_bytes(cords, size, zoom, layer, api_key)
 
 
 if __name__ == "__main__":
-    print(get_image_by_address_bytes("russia", 4, "map"))
+    print(get_image_by_address_bytes("russia", (450,450), "map", 10))
