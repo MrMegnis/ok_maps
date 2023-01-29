@@ -32,16 +32,22 @@ class Map(QMainWindow, Ui_MainWindow):
         self.find_address("екатеринбург")
         self.cur_type = 1
         self.size = [450, 450]
-        # self.cords[0] = float(input())
-        # self.cords[1] = float(input())
-        self.zoom = int(input())
+        self.cords[0] = float(input("Введите координату x: "))
+        self.cords[1] = float(input("Введите координату y: "))
+        self.zoom = int(input("Введите масштаб: "))
         self.spn = self.zoom
         self.show_map()
+
+        self.comboBox.activated.connect(self.change_mode)
 
         # self.startdialog = StartDialog()
         # self.startdialog.show()
         # self.startdialog.OkBtn.clicked.connect(lambda: self.change_coords_and_size([self.startdialog.xSpinBox.value(),
         #                                     self.startdialog.ySpinBox.value()], self.startdialog.scaleSpinBox.value()))
+
+    def change_mode(self, value):
+        self.cur_type = value
+        self.show_map()
 
     def change_coords_and_size(self, cords: list, zoom: float):
         self.cords = cords
@@ -72,7 +78,6 @@ class Map(QMainWindow, Ui_MainWindow):
         print(self.cords, self.zoom, self.map_types[self.cur_type])
         image_path = get_image_by_cords_as_png(tuple(self.cords), tuple(self.size), self.map_types[self.cur_type], self.marks, "temp/a.png", spn=self.spn)
         pixmap = QPixmap(image_path)
-        print(pixmap.height())
         self.label.setPixmap(pixmap)
 
     def find_address(self, address):
