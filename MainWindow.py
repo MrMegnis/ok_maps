@@ -61,7 +61,7 @@ class Map(QMainWindow, Ui_MainWindow):
         if self.cords[0] < -90:
             self.cords[0] = -90
         print(self.cords, self.zoom, self.map_types[self.cur_type])
-        image_path = get_image_by_cords_as_png(tuple(self.cords), self.zoom, self.map_types[self.cur_type], "temp/a.png")
+        image_path = get_image_by_cords_as_png(tuple(self.cords), tuple(self.size), self.zoom, self.map_types[self.cur_type], "temp/a.png")
         pixmap = QPixmap(image_path)
         print(pixmap.height())
         self.label.setPixmap(pixmap)

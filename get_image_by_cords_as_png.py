@@ -3,11 +3,12 @@ from io import BytesIO
 import requests
 from PIL import Image
 
-def get_image_by_cords_as_png(cords : tuple, zoom, layer, path, api_key="40d1649f-0493-4b70-98ba-98533de7710b"):
+def get_image_by_cords_as_png(cords : tuple, size : tuple, zoom, layer, path, api_key="40d1649f-0493-4b70-98ba-98533de7710b"):
     url = f"https://static-maps.yandex.ru/1.x"
     map_params = {
         "ll": ",".join(map(str, cords)),
         "spn": ",".join(map(str, (zoom, zoom))),
+        "size" : ",".join(map(str, size)),
         "l": layer
         # "pt": f"{cords},pmwtm1"
     }
