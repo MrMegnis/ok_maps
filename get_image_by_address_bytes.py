@@ -1,7 +1,7 @@
 import requests
 from get_image_by_cords_bytes import get_image_by_cords_bytes
 
-def get_image_by_address_bytes(addres, zoom, api_key="40d1649f-0493-4b70-98ba-98533de7710b"):
+def get_image_by_address_bytes(addres, zoom, layer, api_key="40d1649f-0493-4b70-98ba-98533de7710b"):
     url = f"https://geocode-maps.yandex.ru/1.x?geocode={addres}&apikey={api_key}&format=json"
     geocoder_params = {
         "apikey": api_key,
@@ -13,8 +13,8 @@ def get_image_by_address_bytes(addres, zoom, api_key="40d1649f-0493-4b70-98ba-98
         # print(cords)
 
     cords = tuple(map(float, cords.split()))
-    return get_image_by_cords_bytes(cords, zoom, api_key)
+    return get_image_by_cords_bytes(cords, zoom, layer, api_key)
 
 
 if __name__ == "__main__":
-    print(get_image_by_address_bytes("russia", 4))
+    print(get_image_by_address_bytes("russia", 4, "map"))

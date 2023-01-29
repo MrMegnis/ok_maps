@@ -25,7 +25,9 @@ class Map(QMainWindow, Ui_MainWindow):
         self.cords = [0, 0]
         self.zoom = 4
         self.delta = 1
-
+        self.map_types = ["map", "sat", "sat,skl"]
+        self.cur_type = 1
+        self.size = [450, 450]
         self.cords[0] = float(input())
         self.cords[1] = float(input())
         self.zoom = float(input())
@@ -41,9 +43,13 @@ class Map(QMainWindow, Ui_MainWindow):
         self.zoom = zoom
         self.show_map()
 
+    def change_type(self):
+        self.cur_type += 1
+        self.cur_type = self.cur_type % len(self.map_types)
+
     def show_map(self):
-        if self.zoom < 0.002:
-            self.zoom = 0.002
+        if self.zoom < 0.02:
+            self.zoom = 0.02
         if self.zoom > 17:
             self.zoom = 17
         if self.cords[0] > 180:
@@ -54,9 +60,10 @@ class Map(QMainWindow, Ui_MainWindow):
             self.cords[0] = 90
         if self.cords[0] < -90:
             self.cords[0] = -90
-        print(self.cords, self.zoom)
-        get_image_by_cords_as_png(cords=tuple(self.cords), zoom=self.zoom, path="temp/a.png")
-        pixmap = QPixmap("temp/a.png")
+        print(self.cords, self.zoom, self.map_types[self.cur_type])
+        image_path = get_image_by_cords_as_png(tuple(self.cords), self.zoom, self.map_types[self.cur_type], "temp/a.png")
+        pixmap = QPixmap(image_path)
+        print(pixmap.height())
         self.label.setPixmap(pixmap)
 
     def on_PageUp(self):
