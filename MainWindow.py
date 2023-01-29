@@ -10,6 +10,7 @@ from widgets.main_widget import Ui_MainWindow
 from widgets.start_dialog import Ui_Dialog
 
 from get_image_by_cords_as_png import get_image_by_cords_as_png
+from get_cords_by_adress import get_cords_by_adress
 
 
 class StartDialog(QDialog, Ui_Dialog):
@@ -24,13 +25,17 @@ class Map(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.cords = [0, 0]
         self.zoom = 4
-        self.delta = 1
+        self.delta_zoom = 1
+        self.delta_spn = 1
         self.map_types = ["map", "sat", "sat,skl"]
+        self.marks = []
+        self.find_address("екатеринбург")
         self.cur_type = 1
         self.size = [450, 450]
-        self.cords[0] = float(input())
-        self.cords[1] = float(input())
-        self.zoom = float(input())
+        # self.cords[0] = float(input())
+        # self.cords[1] = float(input())
+        self.zoom = int(input())
+        self.spn = self.zoom
         self.show_map()
 
         # self.startdialog = StartDialog()
@@ -48,10 +53,14 @@ class Map(QMainWindow, Ui_MainWindow):
         self.cur_type = self.cur_type % len(self.map_types)
 
     def show_map(self):
-        if self.zoom < 0.02:
-            self.zoom = 0.02
+        if self.zoom < 0:
+            self.zoom = 1
         if self.zoom > 17:
             self.zoom = 17
+        if self.spn < 0.002:
+            self.spn = 0.002
+        if self.spn > 100:
+            self.spn = 100
         if self.cords[0] > 180:
             self.cords[0] = 180
         if self.cords[0] < -180:
@@ -61,33 +70,45 @@ class Map(QMainWindow, Ui_MainWindow):
         if self.cords[0] < -90:
             self.cords[0] = -90
         print(self.cords, self.zoom, self.map_types[self.cur_type])
-        image_path = get_image_by_cords_as_png(tuple(self.cords), tuple(self.size), self.zoom, self.map_types[self.cur_type], "temp/a.png")
+        image_path = get_image_by_cords_as_png(tuple(self.cords), tuple(self.size), self.map_types[self.cur_type], self.marks, "temp/a.png", spn=self.spn)
         pixmap = QPixmap(image_path)
         print(pixmap.height())
         self.label.setPixmap(pixmap)
 
+    def find_address(self, address):
+        if address != "":
+            cords = get_cords_by_adress(address)
+            self.set_cords(cords)
+            self.marks.clear()
+            self.marks.append(f"{','.join(map(str, cords))},pmwtm1")
+
+    def set_cords(self, cords : tuple):
+        self.cords = list(cords)
+
     def on_PageUp(self):
-        self.zoom -= self.delta
+        self.zoom -= self.delta_zoom
+        self.spn -= self.delta_spn
         self.show_map()
 
     def on_PageDown(self):
-        self.zoom += self.delta
+        self.zoom += self.delta_zoom
+        self.spn += self.delta_spn
         self.show_map()
 
     def on_key_up(self):
-        self.cords[1] += self.zoom
+        self.cords[1] += self.spn
         self.show_map()
 
     def on_key_down(self):
-        self.cords[1] -= self.zoom
+        self.cords[1] -= self.spn
         self.show_map()
 
     def on_key_left(self):
-        self.cords[0] -= self.zoom
+        self.cords[0] -= self.spn
         self.show_map()
 
     def on_key_right(self):
-        self.cords[0] += self.zoom
+        self.cords[0] += self.spn
         self.show_map()
 
     def keyPressEvent(self, event) -> None:
